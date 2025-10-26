@@ -1,5 +1,4 @@
-// ---- FLUGDATEN ----
-const flights = [
+
   // ---- FLUGDATEN ----
 const flights = [
   // Palma de Mallorca
