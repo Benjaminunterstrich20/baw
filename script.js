@@ -60,40 +60,40 @@ const flights = [
   {number:"BW527", start:"WAW", ziel:"CGN", abflug:["07:35","11:20","14:55","19:30"], landung:["09:05","12:50","16:25","21:00"], richtung:"Rück"},
 
   // Heraklion
-  {number:"BN420", start:"CGN", ziel:"HER", abflug:["06:50","10:40","14:20","18:55"], landung:["09:10","13:00","16:40","21:15"], richtung:"Hin"},
-  {number:"BN421", start:"HER", ziel:"CGN", abflug:["07:55","11:45","15:25","20:00"], landung:["10:15","14:05","17:45","22:20"], richtung:"Rück"},
+  {number:"Bw420", start:"CGN", ziel:"HER", abflug:["06:50","10:40","14:20","18:55"], landung:["09:10","13:00","16:40","21:15"], richtung:"Hin"},
+  {number:"Bw421", start:"HER", ziel:"CGN", abflug:["07:55","11:45","15:25","20:00"], landung:["10:15","14:05","17:45","22:20"], richtung:"Rück"},
 
   // STR Stuttgart
-  {number:"BN400", start:"CGN", ziel:"STR", abflug:["06:35","10:15","14:00","18:20"], landung:["07:20","11:00","14:45","19:05"], richtung:"Hin"},
-  {number:"BN401", start:"STR", ziel:"CGN", abflug:["07:40","11:20","15:05","19:25"], landung:["08:25","12:05","15:50","20:10"], richtung:"Rück"},
+  {number:"Bw400", start:"CGN", ziel:"STR", abflug:["06:35","10:15","14:00","18:20"], landung:["07:20","11:00","14:45","19:05"], richtung:"Hin"},
+  {number:"Bw401", start:"STR", ziel:"CGN", abflug:["07:40","11:20","15:05","19:25"], landung:["08:25","12:05","15:50","20:10"], richtung:"Rück"},
 
   // Weitere coole Destinationen (z.B. LIS, MAD, PRG, LUX, CPH, TLL, HEL, SOF, BSL)
-  {number:"BN402", start:"CGN", ziel:"LIS", abflug:["06:50","10:40","14:30","19:00"], landung:["08:50","12:40","16:30","21:00"], richtung:"Hin"},
-  {number:"BN403", start:"LIS", ziel:"CGN", abflug:["07:55","11:45","15:35","20:05"], landung:["09:55","13:45","17:35","22:05"], richtung:"Rück"},
+  {number:"Bw402", start:"CGN", ziel:"LIS", abflug:["06:50","10:40","14:30","19:00"], landung:["08:50","12:40","16:30","21:00"], richtung:"Hin"},
+  {number:"Bw403", start:"LIS", ziel:"CGN", abflug:["07:55","11:45","15:35","20:05"], landung:["09:55","13:45","17:35","22:05"], richtung:"Rück"},
 
-  {number:"BN404", start:"CGN", ziel:"MAD", abflug:["06:25","09:50","13:40","18:15"], landung:["08:55","11:20","15:10","19:45"], richtung:"Hin"},
-  {number:"BN405", start:"MAD", ziel:"CGN", abflug:["07:30","10:55","14:45","19:20"], landung:["09:55","13:20","17:10","21:45"], richtung:"Rück"},
+  {number:"Bw404", start:"CGN", ziel:"MAD", abflug:["06:25","09:50","13:40","18:15"], landung:["08:55","11:20","15:10","19:45"], richtung:"Hin"},
+  {number:"Bw405", start:"MAD", ziel:"CGN", abflug:["07:30","10:55","14:45","19:20"], landung:["09:55","13:20","17:10","21:45"], richtung:"Rück"},
 
-  {number:"BN406", start:"CGN", ziel:"PRG", abflug:["06:40","10:20","14:05","18:30"], landung:["07:40","11:20","15:05","19:30"], richtung:"Hin"},
-  {number:"BN407", start:"PRG", ziel:"CGN", abflug:["07:45","11:25","15:10","19:35"], landung:["08:45","12:25","16:10","20:35"], richtung:"Rück"},
+  {number:"Bw406", start:"CGN", ziel:"PRG", abflug:["06:40","10:20","14:05","18:30"], landung:["07:40","11:20","15:05","19:30"], richtung:"Hin"},
+  {number:"Bw407", start:"PRG", ziel:"CGN", abflug:["07:45","11:25","15:10","19:35"], landung:["08:45","12:25","16:10","20:35"], richtung:"Rück"},
 
-  {number:"BN408", start:"CGN", ziel:"LUX", abflug:["06:50","10:30","14:10","18:40"], landung:["07:20","11:00","14:40","19:10"], richtung:"Hin"},
-  {number:"BN409", start:"LUX", ziel:"CGN", abflug:["07:50","11:30","15:10","19:40"], landung:["08:20","12:00","15:40","20:10"], richtung:"Rück"},
+  {number:"Bw408", start:"CGN", ziel:"LUX", abflug:["06:50","10:30","14:10","18:40"], landung:["07:20","11:00","14:40","19:10"], richtung:"Hin"},
+  {number:"Bw409", start:"LUX", ziel:"CGN", abflug:["07:50","11:30","15:10","19:40"], landung:["08:20","12:00","15:40","20:10"], richtung:"Rück"},
 
-  {number:"BN410", start:"CGN", ziel:"CPH", abflug:["06:35","10:15","14:00","18:20"], landung:["08:05","11:45","15:30","19:50"], richtung:"Hin"},
-  {number:"BN411", start:"CPH", ziel:"CGN", abflug:["07:40","11:20","15:05","19:25"], landung:["09:10","12:50","16:35","20:55"], richtung:"Rück"},
+  {number:"Bw410", start:"CGN", ziel:"CPH", abflug:["06:35","10:15","14:00","18:20"], landung:["08:05","11:45","15:30","19:50"], richtung:"Hin"},
+  {number:"Bw411", start:"CPH", ziel:"CGN", abflug:["07:40","11:20","15:05","19:25"], landung:["09:10","12:50","16:35","20:55"], richtung:"Rück"},
 
-  {number:"BN412", start:"CGN", ziel:"TLL", abflug:["06:50","10:40","14:20","18:55"], landung:["09:10","13:00","16:40","21:15"], richtung:"Hin"},
-  {number:"BN413", start:"TLL", ziel:"CGN", abflug:["07:55","11:45","15:25","20:00"], landung:["10:15","14:05","17:45","22:20"], richtung:"Rück"},
+  {number:"Bw412", start:"CGN", ziel:"TLL", abflug:["06:50","10:40","14:20","18:55"], landung:["09:10","13:00","16:40","21:15"], richtung:"Hin"},
+  {number:"Bw413", start:"TLL", ziel:"CGN", abflug:["07:55","11:45","15:25","20:00"], landung:["10:15","14:05","17:45","22:20"], richtung:"Rück"},
 
-  {number:"BN414", start:"CGN", ziel:"HEL", abflug:["06:25","10:05","13:50","18:30"], landung:["08:25","12:05","15:50","20:30"], richtung:"Hin"},
-  {number:"BN415", start:"HEL", ziel:"CGN", abflug:["07:30","11:10","14:55","19:35"], landung:["09:30","13:10","16:55","21:35"], richtung:"Rück"},
+  {number:"Bw414", start:"CGN", ziel:"HEL", abflug:["06:25","10:05","13:50","18:30"], landung:["08:25","12:05","15:50","20:30"], richtung:"Hin"},
+  {number:"Bw415", start:"HEL", ziel:"CGN", abflug:["07:30","11:10","14:55","19:35"], landung:["09:30","13:10","16:55","21:35"], richtung:"Rück"},
 
-  {number:"BN416", start:"CGN", ziel:"SOF", abflug:["06:40","10:20","14:05","18:30"], landung:["08:10","11:50","15:35","19:50"], richtung:"Hin"},
-  {number:"BN417", start:"SOF", ziel:"CGN", abflug:["07:45","11:25","15:10","19:35"], landung:["09:15","12:55","16:40","21:05"], richtung:"Rück"},
+  {number:"Bw416", start:"CGN", ziel:"SOF", abflug:["06:40","10:20","14:05","18:30"], landung:["08:10","11:50","15:35","19:50"], richtung:"Hin"},
+  {number:"Bw417", start:"SOF", ziel:"CGN", abflug:["07:45","11:25","15:10","19:35"], landung:["09:15","12:55","16:40","21:05"], richtung:"Rück"},
 
-  {number:"BN418", start:"CGN", ziel:"BSL", abflug:["06:50","10:30","14:10","18:40"], landung:["08:20","12:00","15:40","20:10"], richtung:"Hin"},
-  {number:"BN419", start:"BSL", ziel:"CGN", abflug:["07:55","11:35","15:15","19:55"], landung:["09:25","13:05","16:45","21:25"], richtung:"Rück"}
+  {number:"Bw418", start:"CGN", ziel:"BSL", abflug:["06:50","10:30","14:10","18:40"], landung:["08:20","12:00","15:40","20:10"], richtung:"Hin"},
+  {number:"Bw419", start:"BSL", ziel:"CGN", abflug:["07:55","11:35","15:15","19:55"], landung:["09:25","13:05","16:45","21:25"], richtung:"Rück"}
 ];
 
 // ---- FLÜGE SUCHEN ----
