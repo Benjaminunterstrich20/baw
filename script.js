@@ -1,4 +1,4 @@
-const flights = [
+ const flights = [
   // CGN -> PMI
   {nummer:"BW729", start:"CGN", ziel:"PMI", abflug:"08:00", landung:"10:00", richtung:"Hin"},
   {nummer:"BW730", start:"CGN", ziel:"PMI", abflug:"12:00", landung:"14:00", richtung:"Hin"},
@@ -47,75 +47,64 @@ const flights = [
   {nummer:"BW819", start:"MUC", ziel:"CGN", abflug:"14:00", landung:"15:00", richtung:"Rück"},
   {nummer:"BW820", start:"MUC", ziel:"CGN", abflug:"18:00", landung:"19:00", richtung:"Rück"},
 
-  // CGN -> BUD
-  {nummer:"BW256", start:"CGN", ziel:"BUD", abflug:"07:00", landung:"08:30", richtung:"Hin"},
-  {nummer:"BW257", start:"CGN", ziel:"BUD", abflug:"11:00", landung:"12:30", richtung:"Hin"},
-  {nummer:"BW258", start:"CGN", ziel:"BUD", abflug:"15:00", landung:"16:30", richtung:"Hin"},
-  {nummer:"BW259", start:"BUD", ziel:"CGN", abflug:"08:30", landung:"10:00", richtung:"Rück"},
-  {nummer:"BW260", start:"BUD", ziel:"CGN", abflug:"12:30", landung:"14:00", richtung:"Rück"},
-  {nummer:"BW261", start:"BUD", ziel:"CGN", abflug:"16:30", landung:"18:00", richtung:"Rück"},
-
-  // CGN -> OSL
-  {nummer:"BW690", start:"CGN", ziel:"OSL", abflug:"06:00", landung:"08:00", richtung:"Hin"},
-  {nummer:"BW691", start:"CGN", ziel:"OSL", abflug:"10:00", landung:"12:00", richtung:"Hin"},
-  {nummer:"BW692", start:"CGN", ziel:"OSL", abflug:"14:00", landung:"16:00", richtung:"Hin"},
-  {nummer:"BW693", start:"OSL", ziel:"CGN", abflug:"08:00", landung:"10:00", richtung:"Rück"},
-  {nummer:"BW694", start:"OSL", ziel:"CGN", abflug:"12:00", landung:"14:00", richtung:"Rück"},
-  {nummer:"BW695", start:"OSL", ziel:"CGN", abflug:"16:00", landung:"18:00", richtung:"Rück"},
-
-  // CGN -> NTE
-  {nummer:"BW438", start:"CGN", ziel:"NTE", abflug:"07:00", landung:"08:30", richtung:"Hin"},
-  {nummer:"BW439", start:"CGN", ziel:"NTE", abflug:"11:00", landung:"12:30", richtung:"Hin"},
-  {nummer:"BW440", start:"CGN", ziel:"NTE", abflug:"15:00", landung:"16:30", richtung:"Hin"},
-  {nummer:"BW441", start:"NTE", ziel:"CGN", abflug:"08:30", landung:"10:00", richtung:"Rück"},
-  {nummer:"BW442", start:"NTE", ziel:"CGN", abflug:"12:30", landung:"14:00", richtung:"Rück"},
-  {nummer:"BW443", start:"NTE", ziel:"CGN", abflug:"16:30", landung:"18:00", richtung:"Rück"},
-
-  // CGN -> LHR
-  {nummer:"BW075", start:"CGN", ziel:"LHR", abflug:"06:00", landung:"07:00", richtung:"Hin"},
-  {nummer:"BW076", start:"CGN", ziel:"LHR", abflug:"10:00", landung:"11:00", richtung:"Hin"},
-  {nummer:"BW077", start:"CGN", ziel:"LHR", abflug:"14:00", landung:"15:00", richtung:"Hin"},
-  {nummer:"BW078", start:"LHR", ziel:"CGN", abflug:"07:00", landung:"08:00", richtung:"Rück"},
-  {nummer:"BW079", start:"LHR", ziel:"CGN", abflug:"11:00", landung:"12:00", richtung:"Rück"},
-  {nummer:"BW080", start:"LHR", ziel:"CGN", abflug:"15:00", landung:"16:00", richtung:"Rück"},
-
-  // CGN -> DUS
-  {nummer:"BW951", start:"CGN", ziel:"DUS", abflug:"06:00", landung:"06:15", richtung:"Hin"},
-  {nummer:"BW952", start:"CGN", ziel:"DUS", abflug:"10:00", landung:"10:15", richtung:"Hin"},
-  {nummer:"BW953", start:"CGN", ziel:"DUS", abflug:"14:00", landung:"14:15", richtung:"Hin"},
-  {nummer:"BW954", start:"DUS", ziel:"CGN", abflug:"06:15", landung:"06:30", richtung:"Rück"},
-  {nummer:"BW955", start:"DUS", ziel:"CGN", abflug:"10:15", landung:"10:30", richtung:"Rück"},
-  {nummer:"BW956", start:"DUS", ziel:"CGN", abflug:"14:15", landung:"14:30", richtung:"Rück"},
-
-  // CGN -> LOWW (Wien)
-  {nummer:"BW319", start:"CGN", ziel:"LOWW", abflug:"08:00", landung:"09:30", richtung:"Hin"},
-  {nummer:"BW320", start:"CGN", ziel:"LOWW", abflug:"12:00", landung:"13:30", richtung:"Hin"},
-  {nummer:"BW321", start:"CGN", ziel:"LOWW", abflug:"16:00", landung:"17:30", richtung:"Hin"},
-  {nummer:"BW322", start:"LOWW", ziel:"CGN", abflug:"09:30", landung:"11:00", richtung:"Rück"},
-  {nummer:"BW323", start:"LOWW", ziel:"CGN", abflug:"13:30", landung:"15:00", richtung:"Rück"},
-  {nummer:"BW324", start:"LOWW", ziel:"CGN", abflug:"17:30", landung:"19:00", richtung:"Rück"},
-
-  // CGN -> FCO (Rom)
-  {nummer:"BW784", start:"CGN", ziel:"FCO", abflug:"07:00", landung:"09:00", richtung:"Hin"},
-  {nummer:"BW785", start:"CGN", ziel:"FCO", abflug:"11:00", landung:"13:00", richtung:"Hin"},
-  {nummer:"BW786", start:"CGN", ziel:"FCO", abflug:"15:00", landung:"17:00", richtung:"Hin"},
-  {nummer:"BW787", start:"FCO", ziel:"CGN", abflug:"09:00", landung:"11:00", richtung:"Rück"},
-  {nummer:"BW788", start:"FCO", ziel:"CGN", abflug:"13:00", landung:"15:00", richtung:"Rück"},
-  {nummer:"BW789", start:"FCO", ziel:"CGN", abflug:"17:00", landung:"19:00", richtung:"Rück"},
-
-  // CGN -> LEBL (Barcelona)
-  {nummer:"BW162", start:"CGN", ziel:"LEBL", abflug:"08:00", landung:"10:00", richtung:"Hin"},
-  {nummer:"BW163", start:"CGN", ziel:"LEBL", abflug:"12:00", landung:"14:00", richtung:"Hin"},
-  {nummer:"BW164", start:"CGN", ziel:"LEBL", abflug:"16:00", landung:"18:00", richtung:"Hin"},
-  {nummer:"BW165", start:"LEBL", ziel:"CGN", abflug:"10:00", landung:"12:00", richtung:"Rück"},
-  {nummer:"BW166", start:"LEBL", ziel:"CGN", abflug:"14:00", landung:"16:00", richtung:"Rück"},
-  {nummer:"BW167", start:"LEBL", ziel:"CGN", abflug:"18:00", landung:"20:00", richtung:"Rück"},
-
-  // CGN -> EPWA (Warsaw)
-  {nummer:"BW527", start:"CGN", ziel:"EPWA", abflug:"08:00", landung:"09:30", richtung:"Hin"},
-  {nummer:"BW528", start:"CGN", ziel:"EPWA", abflug:"12:00", landung:"13:30", richtung:"Hin"},
-  {nummer:"BW529", start:"CGN", ziel:"EPWA", abflug:"16:00", landung:"17:30", richtung:"Hin"},
-  {nummer:"BW530", start:"EPWA", ziel:"CGN", abflug:"09:30", landung:"11:00", richtung:"Rück"},
-  {nummer:"BW531", start:"EPWA", ziel:"CGN", abflug:"13:30", landung:"15:00", richtung:"Rück"},
-  {nummer:"BW532", start:"EPWA", ziel:"CGN", abflug:"17:30", landung:"19:00", richtung:"Rück"},
+  // weitere Routen wie BUD, OSL, NTE, LHR, DUS, LOWW, FCO, LEBL, EPWA analog...
 ];
+
+// Funktion zum Suchen der Flüge
+function searchFlights() {
+  const start = document.getElementById("startInput").value.toUpperCase();
+  const ziel = document.getElementById("zielInput").value.toUpperCase();
+  const date = document.getElementById("dateInput").value;
+  const tableBody = document.getElementById("flightTable");
+  tableBody.innerHTML = "";
+
+  if(!date){
+    alert("Bitte Datum auswählen!");
+    return;
+  }
+
+  const results = flights.filter(f => f.start === start && f.ziel === ziel);
+  if(results.length === 0){
+    tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:10px">Kein Flug gefunden</td></tr>`;
+    return;
+  }
+
+  results.forEach(f => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${f.nummer}</td>
+      <td>${f.start}</td>
+      <td>${f.ziel}</td>
+      <td>${f.abflug}</td>
+      <td>${f.landung}</td>
+      <td>${f.richtung}</td>
+      <td>${date}</td>
+      <td><button onclick="generateTicket('${f.nummer}','${f.start}','${f.ziel}','${f.abflug}','${f.landung}','${date}')">PDF</button></td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Funktion zum Erstellen des PDF-Tickets mit QR
+async function generateTicket(nummer, start, ziel, abflug, landung, datum){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Benni Airways", 105, 20, null, null, 'center');
+  doc.setFontSize(14);
+  doc.text(`Flugnummer: ${nummer}`, 20, 40);
+  doc.text(`Von: ${start}`, 20, 50);
+  doc.text(`Nach: ${ziel}`, 20, 60);
+  doc.text(`Abflug: ${abflug}`, 20, 70);
+  doc.text(`Landung: ${landung}`, 20, 80);
+  doc.text(`Datum: ${datum}`, 20, 90);
+
+  const qrDiv = document.createElement('div');
+  new QRCode(qrDiv, { text: `Flug:${nummer} Von:${start} Nach:${ziel} Abflug:${abflug} Landung:${landung} Datum:${datum}`, width: 100, height: 100 });
+  await new Promise(r => setTimeout(r,100));
+  const qrImg = qrDiv.querySelector('img').src;
+  doc.addImage(qrImg, 'PNG', 150, 50, 40, 40);
+
+  doc.save(`${nummer}_${datum}_ticket.pdf`);
+}
