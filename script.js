@@ -137,7 +137,7 @@ function searchFlights(){
 }
 
 // ---- PDF GENERIEREN ----
-function generateTicketWithTime(flightNumber, name, seat, tarif, date){
+function generateTicket(flightNumber, name, seat, tarif, date){
     const flight = flights.find(f => f.number === flightNumber);
     const select = document.getElementById(`timeSelect_${flight.number}`);
     const index = select.selectedIndex;
