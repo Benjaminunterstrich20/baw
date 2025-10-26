@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benni Airways Buchung</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        color: #fff;
+    }
+    h1 { margin-bottom: 20px; }
+    .form-group {
+        margin: 8px 0;
+    }
+    input {
+        padding: 10px 12px;
+        border-radius: 50px;
+        border: none;
+        width: 180px;
+        outline: none;
+        margin-right: 10px;
+    }
+    button {
+        padding: 12px 25px;
+        border-radius: 50px;
+        border: none;
+        background: #ffdd00;
+        color: #0072ff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<h1>Benni Airways Buchung</h1>
+
+<div class="form-group">
+    <input type="text" id="passengerName" placeholder="Name" />
+</div>
+<div class="form-group">
+    <input type="text" id="flightNumber" placeholder="Flugnummer" />
+</div>
+<div class="form-group">
+    <input type="text" id="seatNumber" placeholder="Sitz" />
+</div>
+<div class="form-group">
+    <input type="date" id="flightDate" />
+</div>
+<div class="form-group">
+    <input type="text" id="bookingCode" placeholder="Buchungscode (3)" maxlength="3" />
+</div>
+<div class="form-group">
+    <button id="generateTicket">Ticket generieren</button>
+</div>
+
+<script>
+const { jsPDF } = window.jspdf;
+
+document.getElementById('generateTicket').addEventListener('click', async () => {
+    const name = document.getElementById('passengerName').value || "Benni Muster";
+    const flight = document.getElementById('flightNumber').value || "BA123";
+    const seat = document.getElementById('seatNumber').value || "12A";
+    const date = document.getElementById('flightDate').value || "2025-10-26";
+    const code = document.getElementById('bookingCode').value.toUpperCase();
+
+    if (!code || code.length !== 3) {
+        alert("Bitte gib einen 3-stelligen Buchungscode ein!");
+        return;
+    }
+
+    const doc = new jsPDF({ unit: 'pt', format: [300, 500] });
+    const width = 300;
+
+    // Header
+    doc.setFillColor(0, 114, 255);
+    doc.rect(0, 0, width, 80, 'F');
+    doc.setTextColor(255, 221, 0);
+    doc.setFontSize(20);
+    doc.text("🛫", 20, 50);
+    doc.setFontSize(16);
+    doc.text("Benni Airways", 50, 50);
+
+    // Ticketdetails
+    doc.setTextColor(0);
+    doc.setFontSize(12);
+    doc.text(`Passenger: ${name}`, 20, 120);
+    doc.text(`Flight: ${flight}`, 20, 140);
+    doc.text(`Date: ${date}`, 20, 160);
+    doc.text(`Seat: ${seat}`, 20, 180);
+    doc.text(`Booking Code: ${code}`, 20, 200);
+    doc.rect(15, 110, 270, 100);
+
+    // QR-Code generieren
+    const qrData = `Passenger:${name}|Flight:${flight}|Date:${date}|Seat:${seat}|Code:${code}`;
+    const qrCanvas = document.createElement('canvas');
+    await QRCode.toCanvas(qrCanvas, qrData, { width: 100 });
+    const qrImg = qrCanvas.toDataURL('image/png');
+    doc.addImage(qrImg, 'PNG', 100, 230, 100, 100);
+
+    // Footer
+    doc.setFontSize(8);
+    doc.text("© 2025 Benni Airways. Alle Rechte vorbehalten.", 20, 450);
+
+    doc.save(`BenniAirways_Ticket_${code}.pdf`);
+});
+</script>
+</body>
+</html>
