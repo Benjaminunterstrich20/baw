@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitzplan - Benni Airways</title>
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1><a href="index.html" style="text-decoration:none; color:inherit;">Benni Airways ✈️</a></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="booking.html">Flug buchen</a>
+    <a href="faq.html">FAQ</a>
+    <a href="sitzplan.html">Sitzplan</a>
+    <a href="about.html">Über uns</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Sitzplan</h2>
+  <img src="sitzplan1.png" alt="Sitzplan" style="max-width:100%; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+</main>
+</body>
+</html>
