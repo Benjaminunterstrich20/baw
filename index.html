@@ -4,32 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Benni Airways – Modern Flugplan</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
 
-<div class="max-w-5xl mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6 text-center text-blue-900">Benni Airways</h1>
+<div class="container">
+  <h1>Benni Airways</h1>
 
-  <div class="flex flex-wrap justify-center gap-3 mb-6">
-    <input id="startInput" type="text" placeholder="Start (IATA)" maxlength="3" class="px-3 py-2 border rounded shadow w-24 text-center focus:ring-2 focus:ring-blue-400">
-    <input id="zielInput" type="text" placeholder="Ziel (IATA)" maxlength="3" class="px-3 py-2 border rounded shadow w-24 text-center focus:ring-2 focus:ring-blue-400">
-    <button onclick="searchFlights()" class="bg-blue-700 text-white px-6 py-2 rounded shadow hover:bg-blue-800 transition">Suchen</button>
+  <div class="input-group">
+    <input id="startInput" type="text" placeholder="Start (IATA)" maxlength="3">
+    <input id="zielInput" type="text" placeholder="Ziel (IATA)" maxlength="3">
+    <button onclick="searchFlights()">Suchen</button>
   </div>
 
-  <div class="overflow-x-auto bg-white rounded shadow">
-    <table class="min-w-full text-sm sm:text-base">
-      <thead class="bg-blue-900 text-white">
+  <div class="table-container">
+    <table>
+      <thead>
         <tr>
-          <th class="py-3 px-3">Flug</th>
-          <th class="py-3 px-3">Start</th>
-          <th class="py-3 px-3">Ziel</th>
-          <th class="py-3 px-3">Abflug</th>
-          <th class="py-3 px-3">Landung</th>
-          <th class="py-3 px-3">Richtung</th>
-          <th class="py-3 px-3">Ticket</th>
+          <th>Flug</th>
+          <th>Start</th>
+          <th>Ziel</th>
+          <th>Abflug</th>
+          <th>Landung</th>
+          <th>Richtung</th>
+          <th>Ticket</th>
         </tr>
       </thead>
       <tbody id="flightTable"></tbody>
@@ -37,95 +35,9 @@
   </div>
 </div>
 
-<script>
-const flights = [
-  // Hinflüge
-  {nummer:"BW729", start:"CGN", ziel:"PMI", abflug:"10:00", landung:"12:00", richtung:"Hin"},
-  {nummer:"BW381", start:"CGN", ziel:"BER", abflug:"12:00", landung:"13:00", richtung:"Hin"},
-  {nummer:"BW902", start:"CGN", ziel:"CDG", abflug:"14:00", landung:"15:00", richtung:"Hin"},
-  {nummer:"BW147", start:"CGN", ziel:"FRA", abflug:"16:00", landung:"16:30", richtung:"Hin"},
-  {nummer:"BW563", start:"CGN", ziel:"HAM", abflug:"17:00", landung:"18:00", richtung:"Hin"},
-  {nummer:"BW815", start:"CGN", ziel:"MUC", abflug:"18:30", landung:"19:30", richtung:"Hin"},
-  {nummer:"BW256", start:"CGN", ziel:"BUD", abflug:"20:00", landung:"21:30", richtung:"Hin"},
-  {nummer:"BW690", start:"CGN", ziel:"OSL", abflug:"21:00", landung:"23:00", richtung:"Hin"},
-  {nummer:"BW438", start:"CGN", ziel:"NTE", abflug:"09:00", landung:"10:30", richtung:"Hin"},
-  {nummer:"BW075", start:"CGN", ziel:"LHR", abflug:"11:00", landung:"12:00", richtung:"Hin"},
-  {nummer:"BW951", start:"CGN", ziel:"DUS", abflug:"13:00", landung:"13:15", richtung:"Hin"},
-  {nummer:"BW319", start:"CGN", ziel:"LOWW", abflug:"14:30", landung:"16:00", richtung:"Hin"},
-  {nummer:"BW784", start:"CGN", ziel:"FCO", abflug:"15:00", landung:"17:00", richtung:"Hin"},
-  {nummer:"BW162", start:"CGN", ziel:"LEBL", abflug:"16:00", landung:"18:00", richtung:"Hin"},
-  {nummer:"BW527", start:"CGN", ziel:"EPWA", abflug:"17:30", landung:"19:00", richtung:"Hin"},
-  // Rückflüge
-  {nummer:"BW730", start:"PMI", ziel:"CGN", abflug:"14:00", landung:"16:00", richtung:"Rück"},
-  {nummer:"BW382", start:"BER", ziel:"CGN", abflug:"14:00", landung:"15:00", richtung:"Rück"},
-  {nummer:"BW903", start:"CDG", ziel:"CGN", abflug:"16:00", landung:"17:00", richtung:"Rück"},
-  {nummer:"BW148", start:"FRA", ziel:"CGN", abflug:"17:00", landung:"17:30", richtung:"Rück"},
-  {nummer:"BW564", start:"HAM", ziel:"CGN", abflug:"18:00", landung:"19:00", richtung:"Rück"},
-  {nummer:"BW816", start:"MUC", ziel:"CGN", abflug:"19:30", landung:"20:30", richtung:"Rück"},
-  {nummer:"BW257", start:"BUD", ziel:"CGN", abflug:"21:30", landung:"23:00", richtung:"Rück"},
-  {nummer:"BW691", start:"OSL", ziel:"CGN", abflug:"23:00", landung:"01:00", richtung:"Rück"},
-  {nummer:"BW439", start:"NTE", ziel:"CGN", abflug:"10:30", landung:"12:00", richtung:"Rück"},
-  {nummer:"BW076", start:"LHR", ziel:"CGN", abflug:"12:00", landung:"13:00", richtung:"Rück"},
-  {nummer:"BW952", start:"DUS", ziel:"CGN", abflug:"13:15", landung:"13:30", richtung:"Rück"},
-  {nummer:"BW320", start:"LOWW", ziel:"CGN", abflug:"16:00", landung:"17:30", richtung:"Rück"},
-  {nummer:"BW785", start:"FCO", ziel:"CGN", abflug:"17:00", landung:"19:00", richtung:"Rück"},
-  {nummer:"BW163", start:"LEBL", ziel:"CGN", abflug:"18:00", landung:"20:00", richtung:"Rück"},
-  {nummer:"BW528", start:"EPWA", ziel:"CGN", abflug:"19:00", landung:"20:30", richtung:"Rück"},
-];
-
-function searchFlights() {
-  const start = document.getElementById("startInput").value.toUpperCase();
-  const ziel = document.getElementById("zielInput").value.toUpperCase();
-  const tableBody = document.getElementById("flightTable");
-  tableBody.innerHTML = "";
-
-  const results = flights.filter(f => f.start === start && f.ziel === ziel);
-  if(results.length === 0){
-    tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Kein Flug gefunden</td></tr>`;
-    return;
-  }
-
-  results.forEach(f => {
-    const row = document.createElement("tr");
-    row.className = "hover:bg-blue-50 transition";
-    row.innerHTML = `
-      <td class="py-2 px-2">${f.nummer}</td>
-      <td class="py-2 px-2">${f.start}</td>
-      <td class="py-2 px-2">${f.ziel}</td>
-      <td class="py-2 px-2">${f.abflug}</td>
-      <td class="py-2 px-2">${f.landung}</td>
-      <td class="py-2 px-2">${f.richtung}</td>
-      <td class="py-2 px-2">
-        <button class="bg-blue-700 text-white px-3 py-1 rounded hover:bg-blue-800 transition"
-        onclick="generateTicket('${f.nummer}','${f.start}','${f.ziel}','${f.abflug}','${f.landung}')">PDF</button>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
-}
-
-async function generateTicket(nummer, start, ziel, abflug, landung){
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  doc.setFontSize(18);
-  doc.text("Benni Airways", 105, 20, null, null, 'center');
-  doc.setFontSize(14);
-  doc.text(`Flugnummer: ${nummer}`, 20, 40);
-  doc.text(`Von: ${start}`, 20, 50);
-  doc.text(`Nach: ${ziel}`, 20, 60);
-  doc.text(`Abflug: ${abflug}`, 20, 70);
-  doc.text(`Landung: ${landung}`, 20, 80);
-
-  const qrDiv = document.createElement('div');
-  new QRCode(qrDiv, { text: `Flug:${nummer} Von:${start} Nach:${ziel} Abflug:${abflug} Landung:${landung}`, width: 100, height: 100 });
-  await new Promise(r => setTimeout(r,100));
-  const qrImg = qrDiv.querySelector('img').src;
-  doc.addImage(qrImg, 'PNG', 150, 50, 40, 40);
-
-  doc.save(`${nummer}_ticket.pdf`);
-}
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
