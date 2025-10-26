@@ -1,5 +1,3 @@
-
-  // ---- FLUGDATEN ----
 const flights = [
   // Palma de Mallorca
   {number:"BW730", start:"CGN", ziel:"PMI", abflug:["06:20","09:40","13:15","17:55"], landung:["08:20","11:40","15:15","19:55"], richtung:"Hin"},
@@ -99,7 +97,7 @@ const flights = [
 ];
 
 // ---- FLÜGE SUCHEN ----
-function searchFlights(){
+function searchFlights() {
   const start = document.getElementById("startInput").value.toUpperCase();
   const ziel = document.getElementById("zielInput").value.toUpperCase();
   const name = document.getElementById("nameInput").value;
@@ -110,72 +108,76 @@ function searchFlights(){
   const table = document.getElementById("flightTable");
   table.innerHTML = "";
 
-  const results = flights.filter(f=>f.start===start && f.ziel===ziel);
-  if(results.length===0){
-    table.innerHTML = "<tr><td colspan='9'>Keine Flüge gefunden</td></tr>";
-    return;
+  const results = flights.filter(f => f.start === start && f.ziel === ziel);
+  if (results.length === 0) {
+      table.innerHTML = "<tr><td colspan='9'>Keine Flüge gefunden</td></tr>";
+      return;
   }
 
-  results.forEach(f=>{
-    const options = f.abflug.map((t,i)=>`<option value="${i}">${t} - ${f.landung[i]}</option>`).join('');
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td data-label="Flugnummer">${f.number}</td>
-      <td data-label="Start">${f.start}</td>
-      <td data-label="Ziel">${f.ziel}</td>
-      <td data-label="Abflug-Zeit"><select id="timeSelect_${f.number}">${options}</select></td>
-      <td data-label="Richtung">${f.richtung}</td>
-      <td data-label="Datum">${date}</td>
-      <td data-label="Tarif">${tarif}</td>
-      <td data-label="Name">${name}</td>
-      <td data-label="Ticket"><button onclick='generateTicket("${f.number}","${name}","${seat}","${tarif}","${date}")'>PDF</button></td>
-    `;
-    table.appendChild(tr);
+  results.forEach(f => {
+      const options = f.abflug.map((t, i) => `<option value="${i}">${t} - ${f.landung[i]}</option>`).join('');
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+          <td data-label="Flugnummer">${f.number}</td>
+          <td data-label="Start">${f.start}</td>
+          <td data-label="Ziel">${f.ziel}</td>
+          <td data-label="Abflug-Zeit"><select id="timeSelect_${f.number}">${options}</select></td>
+          <td data-label="Richtung">${f.richtung}</td>
+          <td data-label="Datum">${date}</td>
+          <td data-label="Tarif">${tarif}</td>
+          <td data-label="Name">${name}</td>
+          <td data-label="Ticket">
+              <button onclick='generateTicketWithTime("${f.number}","${name}","${seat}","${tarif}","${date}")'>PDF</button>
+          </td>
+      `;
+      table.appendChild(tr);
   });
 }
 
 // ---- QR-CODE + PDF GENERIEREN ----
 function generateTicketWithTime(flightNumber, name, seat, tarif, date) {
-    const flight = flights.find(f => f.number === flightNumber);
-    const select = document.getElementById(`timeSelect_${flight.number}`);
-    const index = select.selectedIndex;
+  const flight = flights.find(f => f.number === flightNumber);
+  const select = document.getElementById(`timeSelect_${flight.number}`);
+  const index = select.selectedIndex;
 
-    const abflug = flight.abflug[index];
-    const landung = flight.landung[index];
+  const abflug = flight.abflug[index];
+  const landung = flight.landung[index];
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
-    doc.setFontSize(18);
-    doc.text("Benni Airways Boardpass", 20, 20);
+  doc.setFontSize(18);
+  doc.text("Benni Airways Boardpass", 20, 20);
 
-    doc.setFontSize(12);
-    doc.text(`Name: ${name}`, 20, 35);
-    doc.text(`Sitz: ${seat}`, 20, 45);
-    doc.text(`Flugnummer: ${flight.number}`, 20, 55);
-    doc.text(`Von: ${flight.start}   Nach: ${flight.ziel}`, 20, 65);
-    doc.text(`Abflug: ${abflug}   Landung: ${landung}`, 20, 75);
-    doc.text(`Richtung: ${flight.richtung}`, 20, 85);
-    doc.text(`Datum: ${date}`, 20, 95);
-    doc.text(`Tarif: ${tarif}`, 20, 105);
+  doc.setFontSize(12);
+  doc.text(`Name: ${name}`, 20, 35);
+  doc.text(`Sitz: ${seat}`, 20, 45);
+  doc.text(`Flugnummer: ${flight.number}`, 20, 55);
+  doc.text(`Von: ${flight.start}   Nach: ${flight.ziel}`, 20, 65);
+  doc.text(`Abflug: ${abflug}   Landung: ${landung}`, 20, 75);
+  doc.text(`Richtung: ${flight.richtung}`, 20, 85);
+  doc.text(`Datum: ${date}`, 20, 95);
+  doc.text(`Tarif: ${tarif}`, 20, 105);
 
-    // QR-Code generieren und direkt ins PDF einfügen
-    const qrText = `APPROVED|${flight.number}|${name}|${seat}|${tarif}|${date}`;
-    const tempDiv = document.createElement("div");
-    const qr = new QRCode(tempDiv, {
-        text: qrText,
-        width: 80,
-        height: 80,
-        correctLevel: QRCode.CorrectLevel.H
-    });
+  // QR-Code generieren
+  const qrText = `APPROVED|${flight.number}|${name}|${seat}|${tarif}|${date}`;
+  const tempDiv = document.createElement("div");
+  const qr = new QRCode(tempDiv, {
+      text: qrText,
+      width: 80,
+      height: 80,
+      correctLevel: QRCode.CorrectLevel.H
+  });
 
-    // Direkt Canvas auslesen
-    const canvas = tempDiv.querySelector("canvas");
-    if (canvas) {
-        const imgData = canvas.toDataURL("image/png");
-        doc.addImage(imgData, "PNG", 150, 20, 40, 40); // QR rechts oben
-        doc.save(`${flight.number}_${name}.pdf`);
-    } else {
-        alert("QR-Code konnte nicht erstellt werden!");
-    }
+  // Kleines Timeout, damit Canvas fertig rendert
+  setTimeout(() => {
+      const canvas = tempDiv.querySelector("canvas");
+      if (canvas) {
+          const imgData = canvas.toDataURL("image/png");
+          doc.addImage(imgData, "PNG", 150, 20, 40, 40);
+          doc.save(`${flight.number}_${name}.pdf`);
+      } else {
+          alert("QR-Code konnte nicht erstellt werden!");
+      }
+  }, 100); // 100ms reichen normalerweise
 }
