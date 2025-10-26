@@ -1,119 +1,113 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Benni Airways Buchung</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benni Airways Flugplan & PDF-Tickets</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
     body {
-        font-family: 'Montserrat', sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #00c6ff, #0072ff);
-        color: #fff;
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 20px;
     }
-    h1 { margin-bottom: 20px; }
-    .form-group {
-        margin: 8px 0;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background: #fff;
     }
-    input {
-        padding: 10px 12px;
-        border-radius: 50px;
-        border: none;
-        width: 180px;
-        outline: none;
-        margin-right: 10px;
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #1e40af;
+      color: white;
+    }
+    tr:hover {
+      background-color: #e0e7ff;
     }
     button {
-        padding: 12px 25px;
-        border-radius: 50px;
-        border: none;
-        background: #ffdd00;
-        color: #0072ff;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
+      padding: 6px 12px;
+      cursor: pointer;
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      border-radius: 4px;
     }
-    button:hover { transform: scale(1.05); }
-</style>
+  </style>
 </head>
 <body>
-<h1>Benni Airways Buchung</h1>
 
-<div class="form-group">
-    <input type="text" id="passengerName" placeholder="Name" />
-</div>
-<div class="form-group">
-    <input type="text" id="flightNumber" placeholder="Flugnummer" />
-</div>
-<div class="form-group">
-    <input type="text" id="seatNumber" placeholder="Sitz" />
-</div>
-<div class="form-group">
-    <input type="date" id="flightDate" />
-</div>
-<div class="form-group">
-    <input type="text" id="bookingCode" placeholder="Buchungscode (3)" maxlength="3" />
-</div>
-<div class="form-group">
-    <button id="generateTicket">Ticket generieren</button>
-</div>
+<h1>Benni Airways Flugplan</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Flugnummer</th>
+      <th>Zielflughafen</th>
+      <th>Landebahn</th>
+      <th>Flughöhe</th>
+      <th>Flugroute</th>
+      <th>Flugdauer</th>
+      <th>Ticket</th>
+    </tr>
+  </thead>
+  <tbody id="flugtabelle">
+    <tr>
+      <td>BW729</td>
+      <td>Palma de Mallorca (PMI)</td>
+      <td>06R</td>
+      <td>10.000 Fuß</td>
+      <td>CGN -> PMI</td>
+      <td>2 Stunden</td>
+      <td><button onclick="generateTicket('BW729','Palma de Mallorca (PMI)','CGN','PMI','2 Stunden')">PDF</button></td>
+    </tr>
+    <tr>
+      <td>BW381</td>
+      <td>Berlin (BER)</td>
+      <td>25L</td>
+      <td>12.000 Fuß</td>
+      <td>CGN -> BER</td>
+      <td>1 Stunde</td>
+      <td><button onclick="generateTicket('BW381','Berlin (BER)','CGN','BER','1 Stunde')">PDF</button></td>
+    </tr>
+    <!-- Weitere Flüge hier einfügen -->
+  </tbody>
+</table>
 
 <script>
-const { jsPDF } = window.jspdf;
+  async function generateTicket(flugnummer, zielflug, start, ziel, dauer) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-document.getElementById('generateTicket').addEventListener('click', async () => {
-    const name = document.getElementById('passengerName').value || "Benni Muster";
-    const flight = document.getElementById('flightNumber').value || "BA123";
-    const seat = document.getElementById('seatNumber').value || "12A";
-    const date = document.getElementById('flightDate').value || "2025-10-26";
-    const code = document.getElementById('bookingCode').value.toUpperCase();
-
-    if (!code || code.length !== 3) {
-        alert("Bitte gib einen 3-stelligen Buchungscode ein!");
-        return;
-    }
-
-    const doc = new jsPDF({ unit: 'pt', format: [300, 500] });
-    const width = 300;
-
-    // Header
-    doc.setFillColor(0, 114, 255);
-    doc.rect(0, 0, width, 80, 'F');
-    doc.setTextColor(255, 221, 0);
-    doc.setFontSize(20);
-    doc.text("🛫", 20, 50);
-    doc.setFontSize(16);
-    doc.text("Benni Airways", 50, 50);
-
-    // Ticketdetails
-    doc.setTextColor(0);
-    doc.setFontSize(12);
-    doc.text(`Passenger: ${name}`, 20, 120);
-    doc.text(`Flight: ${flight}`, 20, 140);
-    doc.text(`Date: ${date}`, 20, 160);
-    doc.text(`Seat: ${seat}`, 20, 180);
-    doc.text(`Booking Code: ${code}`, 20, 200);
-    doc.rect(15, 110, 270, 100);
+    doc.setFontSize(18);
+    doc.text("Benni Airways", 105, 20, null, null, 'center');
+    doc.setFontSize(14);
+    doc.text(`Flugnummer: ${flugnummer}`, 20, 40);
+    doc.text(`Von: ${start}`, 20, 50);
+    doc.text(`Nach: ${ziel}`, 20, 60);
+    doc.text(`Zielflughafen: ${zielflug}`, 20, 70);
+    doc.text(`Flugdauer: ${dauer}`, 20, 80);
 
     // QR-Code generieren
-    const qrData = `Passenger:${name}|Flight:${flight}|Date:${date}|Seat:${seat}|Code:${code}`;
-    const qrCanvas = document.createElement('canvas');
-    await QRCode.toCanvas(qrCanvas, qrData, { width: 100 });
-    const qrImg = qrCanvas.toDataURL('image/png');
-    doc.addImage(qrImg, 'PNG', 100, 230, 100, 100);
+    const qrDiv = document.createElement('div');
+    new QRCode(qrDiv, {
+      text: `Flug:${flugnummer} Von:${start} Nach:${ziel} Dauer:${dauer}`,
+      width: 100,
+      height: 100
+    });
 
-    // Footer
-    doc.setFontSize(8);
-    doc.text("© 2025 Benni Airways. Alle Rechte vorbehalten.", 20, 450);
+    // QR-Code ins PDF einfügen
+    await new Promise(resolve => setTimeout(resolve, 100)); // kleine Wartezeit, damit QR-Code rendert
+    const qrImg = qrDiv.querySelector('img').src;
+    doc.addImage(qrImg, 'PNG', 150, 50, 40, 40);
 
-    doc.save(`BenniAirways_Ticket_${code}.pdf`);
-});
+    doc.save(`${flugnummer}_ticket.pdf`);
+  }
 </script>
+
 </body>
 </html>
