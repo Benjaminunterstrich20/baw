@@ -97,7 +97,6 @@ const flights = [
   {number:"BN418", start:"CGN", ziel:"BSL", abflug:["06:50","10:30","14:10","18:40"], landung:["08:20","12:00","15:40","20:10"], richtung:"Hin"},
   {number:"BN419", start:"BSL", ziel:"CGN", abflug:["07:55","11:35","15:15","19:55"], landung:["09:25","13:05","16:45","21:25"], richtung:"Rück"}
 ];
-];
 
 // ---- FLÜGE SUCHEN ----
 function searchFlights(){
