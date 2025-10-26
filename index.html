@@ -1,113 +1,114 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Benni Airways Flugplan & PDF-Tickets</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
-      margin: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 30px;
-      background: #fff;
-    }
-    th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
-    th {
-      background-color: #1e40af;
-      color: white;
-    }
-    tr:hover {
-      background-color: #e0e7ff;
-    }
-    button {
-      padding: 6px 12px;
-      cursor: pointer;
-      background: #1e3a8a;
-      color: white;
-      border: none;
-      border-radius: 4px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benni Airways – Mobile Flugplan</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100 font-sans">
 
-<h1>Benni Airways Flugplan</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Flugnummer</th>
-      <th>Zielflughafen</th>
-      <th>Landebahn</th>
-      <th>Flughöhe</th>
-      <th>Flugroute</th>
-      <th>Flugdauer</th>
-      <th>Ticket</th>
-    </tr>
-  </thead>
-  <tbody id="flugtabelle">
-    <tr>
-      <td>BW729</td>
-      <td>Palma de Mallorca (PMI)</td>
-      <td>06R</td>
-      <td>10.000 Fuß</td>
-      <td>CGN -> PMI</td>
-      <td>2 Stunden</td>
-      <td><button onclick="generateTicket('BW729','Palma de Mallorca (PMI)','CGN','PMI','2 Stunden')">PDF</button></td>
-    </tr>
-    <tr>
-      <td>BW381</td>
-      <td>Berlin (BER)</td>
-      <td>25L</td>
-      <td>12.000 Fuß</td>
-      <td>CGN -> BER</td>
-      <td>1 Stunde</td>
-      <td><button onclick="generateTicket('BW381','Berlin (BER)','CGN','BER','1 Stunde')">PDF</button></td>
-    </tr>
-    <!-- Weitere Flüge hier einfügen -->
-  </tbody>
-</table>
+<div class="max-w-4xl mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4 text-center text-blue-900">Benni Airways – Flugplan</h1>
+
+  <div class="flex flex-wrap justify-center gap-2 mb-4">
+    <input id="startInput" type="text" placeholder="Start (IATA)" maxlength="3" class="px-3 py-2 border rounded shadow w-24 text-center">
+    <input id="zielInput" type="text" placeholder="Ziel (IATA)" maxlength="3" class="px-3 py-2 border rounded shadow w-24 text-center">
+    <button onclick="searchFlights()" class="bg-blue-700 text-white px-4 py-2 rounded shadow hover:bg-blue-800 transition">Suchen</button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded shadow overflow-hidden text-sm sm:text-base">
+      <thead class="bg-blue-900 text-white">
+        <tr>
+          <th class="py-2 px-2">Flug</th>
+          <th class="py-2 px-2">Start</th>
+          <th class="py-2 px-2">Ziel</th>
+          <th class="py-2 px-2">Abflug</th>
+          <th class="py-2 px-2">Landung</th>
+          <th class="py-2 px-2">Richtung</th>
+          <th class="py-2 px-2">Ticket</th>
+        </tr>
+      </thead>
+      <tbody id="flightTable"></tbody>
+    </table>
+  </div>
+</div>
 
 <script>
-  async function generateTicket(flugnummer, zielflug, start, ziel, dauer) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+const flights = [
+  // Hinflüge
+  {nummer:"BW729", start:"CGN", ziel:"PMI", abflug:"10:00", landung:"12:00", richtung:"Hin"},
+  {nummer:"BW381", start:"CGN", ziel:"BER", abflug:"12:00", landung:"13:00", richtung:"Hin"},
+  {nummer:"BW902", start:"CGN", ziel:"CDG", abflug:"14:00", landung:"15:00", richtung:"Hin"},
+  {nummer:"BW147", start:"CGN", ziel:"FRA", abflug:"16:00", landung:"16:30", richtung:"Hin"},
+  {nummer:"BW563", start:"CGN", ziel:"HAM", abflug:"17:00", landung:"18:00", richtung:"Hin"},
+  {nummer:"BW815", start:"CGN", ziel:"MUC", abflug:"18:30", landung:"19:30", richtung:"Hin"},
+  {nummer:"BW256", start:"CGN", ziel:"BUD", abflug:"20:00", landung:"21:30", richtung:"Hin"},
+  {nummer:"BW690", start:"CGN", ziel:"OSL", abflug:"21:00", landung:"23:00", richtung:"Hin"},
+  {nummer:"BW438", start:"CGN", ziel:"NTE", abflug:"09:00", landung:"10:30", richtung:"Hin"},
+  {nummer:"BW075", start:"CGN", ziel:"LHR", abflug:"11:00", landung:"12:00", richtung:"Hin"},
+  {nummer:"BW951", start:"CGN", ziel:"DUS", abflug:"13:00", landung:"13:15", richtung:"Hin"},
+  {nummer:"BW319", start:"CGN", ziel:"LOWW", abflug:"14:30", landung:"16:00", richtung:"Hin"},
+  {nummer:"BW784", start:"CGN", ziel:"FCO", abflug:"15:00", landung:"17:00", richtung:"Hin"},
+  {nummer:"BW162", start:"CGN", ziel:"LEBL", abflug:"16:00", landung:"18:00", richtung:"Hin"},
+  {nummer:"BW527", start:"CGN", ziel:"EPWA", abflug:"17:30", landung:"19:00", richtung:"Hin"},
 
-    doc.setFontSize(18);
-    doc.text("Benni Airways", 105, 20, null, null, 'center');
-    doc.setFontSize(14);
-    doc.text(`Flugnummer: ${flugnummer}`, 20, 40);
-    doc.text(`Von: ${start}`, 20, 50);
-    doc.text(`Nach: ${ziel}`, 20, 60);
-    doc.text(`Zielflughafen: ${zielflug}`, 20, 70);
-    doc.text(`Flugdauer: ${dauer}`, 20, 80);
+  // Rückflüge
+  {nummer:"BW730", start:"PMI", ziel:"CGN", abflug:"14:00", landung:"16:00", richtung:"Rück"},
+  {nummer:"BW382", start:"BER", ziel:"CGN", abflug:"14:00", landung:"15:00", richtung:"Rück"},
+  {nummer:"BW903", start:"CDG", ziel:"CGN", abflug:"16:00", landung:"17:00", richtung:"Rück"},
+  {nummer:"BW148", start:"FRA", ziel:"CGN", abflug:"17:00", landung:"17:30", richtung:"Rück"},
+  {nummer:"BW564", start:"HAM", ziel:"CGN", abflug:"18:00", landung:"19:00", richtung:"Rück"},
+  {nummer:"BW816", start:"MUC", ziel:"CGN", abflug:"19:30", landung:"20:30", richtung:"Rück"},
+  {nummer:"BW257", start:"BUD", ziel:"CGN", abflug:"21:30", landung:"23:00", richtung:"Rück"},
+  {nummer:"BW691", start:"OSL", ziel:"CGN", abflug:"23:00", landung:"01:00", richtung:"Rück"},
+  {nummer:"BW439", start:"NTE", ziel:"CGN", abflug:"10:30", landung:"12:00", richtung:"Rück"},
+  {nummer:"BW076", start:"LHR", ziel:"CGN", abflug:"12:00", landung:"13:00", richtung:"Rück"},
+  {nummer:"BW952", start:"DUS", ziel:"CGN", abflug:"13:15", landung:"13:30", richtung:"Rück"},
+  {nummer:"BW320", start:"LOWW", ziel:"CGN", abflug:"16:00", landung:"17:30", richtung:"Rück"},
+  {nummer:"BW785", start:"FCO", ziel:"CGN", abflug:"17:00", landung:"19:00", richtung:"Rück"},
+  {nummer:"BW163", start:"LEBL", ziel:"CGN", abflug:"18:00", landung:"20:00", richtung:"Rück"},
+  {nummer:"BW528", start:"EPWA", ziel:"CGN", abflug:"19:00", landung:"20:30", richtung:"Rück"},
+];
 
-    // QR-Code generieren
-    const qrDiv = document.createElement('div');
-    new QRCode(qrDiv, {
-      text: `Flug:${flugnummer} Von:${start} Nach:${ziel} Dauer:${dauer}`,
-      width: 100,
-      height: 100
-    });
+function searchFlights() {
+  const start = document.getElementById("startInput").value.toUpperCase();
+  const ziel = document.getElementById("zielInput").value.toUpperCase();
+  const tableBody = document.getElementById("flightTable");
+  tableBody.innerHTML = "";
 
-    // QR-Code ins PDF einfügen
-    await new Promise(resolve => setTimeout(resolve, 100)); // kleine Wartezeit, damit QR-Code rendert
-    const qrImg = qrDiv.querySelector('img').src;
-    doc.addImage(qrImg, 'PNG', 150, 50, 40, 40);
-
-    doc.save(`${flugnummer}_ticket.pdf`);
+  const results = flights.filter(f => f.start === start && f.ziel === ziel);
+  if(results.length === 0){
+    tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Kein Flug gefunden</td></tr>`;
+    return;
   }
-</script>
 
-</body>
-</html>
+  results.forEach(f => {
+    const row = document.createElement("tr");
+    row.className = "hover:bg-blue-50";
+    row.innerHTML = `
+      <td class="py-2 px-2">${f.nummer}</td>
+      <td class="py-2 px-2">${f.start}</td>
+      <td class="py-2 px-2">${f.ziel}</td>
+      <td class="py-2 px-2">${f.abflug}</td>
+      <td class="py-2 px-2">${f.landung}</td>
+      <td class="py-2 px-2">${f.richtung}</td>
+      <td class="py-2 px-2"><button class="bg-blue-700 text-white px-3 py-1 rounded hover:bg-blue-800" onclick="generateTicket('${f.nummer}','${f.start}','${f.ziel}','${f.abflug}','${f.landung}')">PDF</button></td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+async function generateTicket(nummer, start, ziel, abflug, landung){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Benni Airways", 105, 20, null, null, 'center');
+  doc.setFontSize(14);
+  doc.text(`Flugnummer: ${nummer}`, 20, 40);
+  doc.text(`Von: ${start}`, 20, 50);
+  doc.text(`Nach: ${ziel}`, 
