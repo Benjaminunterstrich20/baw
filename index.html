@@ -3,45 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Benni Airways – Flugplan</title>
+<title>Benni Airways</title>
 <link href="style.css" rel="stylesheet">
+<style>
+body { font-family: 'Arial', sans-serif; margin:0; padding:0; background:#f0f4f8; }
+header { background:#1e3a8a; color:white; padding:1rem; text-align:center; }
+header h1 { margin:0; }
+nav a { color:white; margin:0 1rem; text-decoration:none; font-weight:bold; }
+main { display:flex; flex-direction:column; align-items:center; padding:2rem; }
+.dashboard { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; width:100%; max-width:600px; margin-top:2rem; }
+.card { background:white; padding:1.5rem; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); text-align:center; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.card:hover { transform:translateY(-5px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+.card img { max-width:80px; margin-bottom:1rem; }
+.card h3 { margin:0; font-size:1.2rem; color:#1e3a8a; }
+</style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Benni Airways</h1>
+<header>
+  <h1>Benni Airways ✈️</h1>
+</header>
 
-  <div class="input-group">
-    <input id="startInput" type="text" placeholder="Start (IATA)" maxlength="3">
-    <input id="zielInput" type="text" placeholder="Ziel (IATA)" maxlength="3">
-    <input id="dateInput" type="date" class="date-input">
-    <input id="nameInput" type="text" placeholder="Name">
-    <input id="seatInput" type="text" placeholder="Sitzplatz">
-    <button onclick="searchFlights()">Suchen</button>
+<main>
+  <img src="logo.png" alt="Logo" style="width:120px; margin-top:1rem;">
+  <h2>Willkommen! Wähle eine Aktion:</h2>
+
+  <div class="dashboard">
+    <div class="card" onclick="location.href='booking.html'">
+      <img src="icons/plane.png" alt="Flug buchen">
+      <h3>Flug buchen</h3>
+    </div>
+
+    <div class="card" onclick="location.href='sitzplan.html'">
+      <img src="icons/seating.png" alt="Sitzplan">
+      <h3>Sitzplan ansehen</h3>
+    </div>
+
+    <div class="card" onclick="location.href='faq.html'">
+      <img src="icons/faq.png" alt="FAQ">
+      <h3>FAQ</h3>
+    </div>
+
+    <div class="card" onclick="location.href='about.html'">
+      <img src="icons/info.png" alt="Über uns">
+      <h3>Über uns</h3>
+    </div>
   </div>
-
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Flug</th>
-          <th>Start</th>
-          <th>Ziel</th>
-          <th>Abflug</th>
-          <th>Landung</th>
-          <th>Richtung</th>
-          <th>Datum</th>
-          <th>Ticket</th>
-        </tr>
-      </thead>
-      <tbody id="flightTable"></tbody>
-    </table>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="script.js"></script>
+</main>
 
 </body>
 </html>
