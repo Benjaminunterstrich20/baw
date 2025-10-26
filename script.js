@@ -137,35 +137,45 @@ function searchFlights(){
 }
 
 // ---- PDF GENERIEREN ----
-function generateTicket(flightNumber,name,seat,tarif,date){
-  const flight = flights.find(f=>f.number===flightNumber);
-  const select = document.getElementById(`timeSelect_${flight.number}`);
-  const index = select.selectedIndex;
+function generateTicketWithTime(flightNumber, name, seat, tarif, date){
+    const flight = flights.find(f => f.number === flightNumber);
+    const select = document.getElementById(`timeSelect_${flight.number}`);
+    const index = select.selectedIndex;
 
-  const abflug = flight.abflug[index];
-  const landung = flight.landung[index];
+    const abflug = flight.abflug[index];
+    const landung = flight.landung[index];
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+    // PDF generieren
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-  doc.setFontSize(22);
-  doc.text("Benni Airways ✈️",105,20,{align:"center"});
-  doc.setFontSize(16);
-  doc.text(`Name: ${name}`,20,40);
-  doc.text(`Sitzplatz: ${seat}`,20,50);
-  doc.text(`Tarif: ${tarif}`,20,60);
-  doc.text(`Flug: ${flight.number}`,20,70);
-  doc.text(`Start: ${flight.start}`,20,80);
-  doc.text(`Ziel: ${flight.ziel}`,20,90);
-  doc.text(`Datum: ${date}`,20,100);
-  doc.text(`Abflug: ${abflug}`,20,110);
-  doc.text(`Landung: ${landung}`,20,120);
+    doc.setFontSize(18);
+    doc.text("Benni Airways Boardpass", 20, 20);
 
-  const qrDiv=document.createElement("div");
-  new QRCode(qrDiv,`${flight.number}|${name}|${seat}|${tarif}|${date}|${abflug}|${landung}`);
-  const qrCanvas = qrDiv.querySelector("canvas");
-  const imgData = qrCanvas.toDataURL("image/png");
-  doc.addImage(imgData,"PNG",150,40,40,40);
+    doc.setFontSize(12);
+    doc.text(`Name: ${name}`, 20, 35);
+    doc.text(`Sitz: ${seat}`, 20, 45);
+    doc.text(`Flugnummer: ${flight.number}`, 20, 55);
+    doc.text(`Von: ${flight.start}   Nach: ${flight.ziel}`, 20, 65);
+    doc.text(`Abflug: ${abflug}   Landung: ${landung}`, 20, 75);
+    doc.text(`Richtung: ${flight.richtung}`, 20, 85);
+    doc.text(`Datum: ${date}`, 20, 95);
+    doc.text(`Tarif: ${tarif}`, 20, 105);
 
-  doc.save(`${flight.number}_${name}.pdf`);
+    // QR-Code mit geheimem Codewort "APPROVED"
+    const qrText = `APPROVED|${flight.number}|${name}|${seat}|${tarif}|${date}`;
+    new QRCode(document.createElement("div"), {
+        text: qrText,
+        width: 80,
+        height: 80,
+        correctLevel: QRCode.CorrectLevel.H
+    })._oDrawing._elCanvas.toBlob(function(blob){
+        const reader = new FileReader();
+        reader.onload = function() {
+            const imgData = reader.result;
+            doc.addImage(imgData, "PNG", 150, 20, 40, 40); // QR-Code rechts oben
+            doc.save(`${flight.number}_${name}.pdf`);
+        };
+        reader.readAsDataURL(blob);
+    });
 }
