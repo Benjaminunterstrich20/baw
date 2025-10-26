@@ -135,8 +135,8 @@ function searchFlights(){
   });
 }
 
-// ---- PDF GENERIEREN ----
-function generateTicket(flightNumber, name, seat, tarif, date){
+// ---- QR-CODE + PDF GENERIEREN ----
+function generateTicketWithTime(flightNumber, name, seat, tarif, date){
     const flight = flights.find(f => f.number === flightNumber);
     const select = document.getElementById(`timeSelect_${flight.number}`);
     const index = select.selectedIndex;
@@ -144,7 +144,6 @@ function generateTicket(flightNumber, name, seat, tarif, date){
     const abflug = flight.abflug[index];
     const landung = flight.landung[index];
 
-    // PDF generieren
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -161,20 +160,25 @@ function generateTicket(flightNumber, name, seat, tarif, date){
     doc.text(`Datum: ${date}`, 20, 95);
     doc.text(`Tarif: ${tarif}`, 20, 105);
 
-    // QR-Code mit geheimem Codewort "APPROVED"
+    // QR-Code generieren
     const qrText = `APPROVED|${flight.number}|${name}|${seat}|${tarif}|${date}`;
-    new QRCode(document.createElement("div"), {
+    const tempDiv = document.createElement("div"); // temporärer Container
+    const qr = new QRCode(tempDiv, {
         text: qrText,
         width: 80,
         height: 80,
         correctLevel: QRCode.CorrectLevel.H
-    })._oDrawing._elCanvas.toBlob(function(blob){
-        const reader = new FileReader();
-        reader.onload = function() {
-            const imgData = reader.result;
-            doc.addImage(imgData, "PNG", 150, 20, 40, 40); // QR-Code rechts oben
-            doc.save(`${flight.number}_${name}.pdf`);
-        };
-        reader.readAsDataURL(blob);
     });
+
+    // Kleines Timeout, bis QR-Code Canvas gerendert ist
+    setTimeout(() => {
+        const canvas = tempDiv.querySelector("canvas");
+        if(canvas){
+            const imgData = canvas.toDataURL("image/png");
+            doc.addImage(imgData, "PNG", 150, 20, 40, 40); // QR rechts oben
+            doc.save(`${flight.number}_${name}.pdf`);
+        } else {
+            alert("QR-Code konnte nicht erstellt werden!");
+        }
+    }, 100); // 100ms reichen normalerweise
 }
