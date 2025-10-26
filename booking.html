@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flug buchen - Benni Airways</title>
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1><a href="index.html" style="text-decoration:none; color:inherit;">Benni Airways ✈️</a></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="booking.html">Flug buchen</a>
+    <a href="faq.html">FAQ</a>
+    <a href="sitzplan.html">Sitzplan</a>
+    <a href="about.html">Über uns</a>
+  </nav>
+</header>
+
+<main>
+  <section class="booking">
+    <h2>Flug buchen</h2>
+    <input id="startInput" type="text" placeholder="Start (IATA)" maxlength="3">
+    <input id="zielInput" type="text" placeholder="Ziel (IATA)" maxlength="3">
+    <input id="dateInput" type="date">
+    <input id="nameInput" type="text" placeholder="Name">
+    <input id="seatInput" type="text" placeholder="Sitzplatz">
+
+    <label for="tarifSelect">Tarif auswählen:</label>
+    <select id="tarifSelect">
+      <option value="Economy">Economy</option>
+      <option value="Business">Business</option>
+      <option value="First">First</option>
+    </select>
+
+    <button onclick="searchFlights()">Flüge anzeigen</button>
+  </section>
+
+  <section class="flight-results">
+    <table>
+      <thead>
+        <tr>
+          <th>Flug</th>
+          <th>Start</th>
+          <th>Ziel</th>
+          <th>Abflug</th>
+          <th>Landung</th>
+          <th>Richtung</th>
+          <th>Datum</th>
+          <th>Ticket</th>
+        </tr>
+      </thead>
+      <tbody id="flightTable"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
