@@ -1,7 +1,3 @@
-Alles klar, Benni 😎 Ich mach’s so, dass alle Flüge aus deiner Tabelle drin sind, Hin- und Rückflüge, 4 Abflugzeiten pro Flug und das PDF-Ticket (Boardpass) den Tarif anzeigt.
-
-Hier ist das komplette Script:
-
 // ---- FLUGDATEN ----
 const flights = [
   // Palma de Mallorca
