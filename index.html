@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Benni Airways – Modern Flugplan</title>
+<title>Benni Airways – Flugplan</title>
 <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -14,6 +14,7 @@
   <div class="input-group">
     <input id="startInput" type="text" placeholder="Start (IATA)" maxlength="3">
     <input id="zielInput" type="text" placeholder="Ziel (IATA)" maxlength="3">
+    <input id="dateInput" type="date" class="date-input">
     <button onclick="searchFlights()">Suchen</button>
   </div>
 
@@ -27,6 +28,7 @@
           <th>Abflug</th>
           <th>Landung</th>
           <th>Richtung</th>
+          <th>Datum</th>
           <th>Ticket</th>
         </tr>
       </thead>
